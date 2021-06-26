@@ -58,7 +58,7 @@
                                 "
                                 lazy-src="https://logospng.org/download/spotify/logo-spotify-icon-4096.png"
                             />
-                            <v-card-text>
+                            <v-card-text style="gap:10px">
                                 <v-btn
                                     @click="prev"
                                     icon="mdi-skip-previous-circle"
@@ -148,7 +148,39 @@
                 </v-card>
             </v-col>
             <v-col height="100%">
-                <v-card height="100%" width="100%"> </v-card>
+                <v-card height="100%" width="100%" color="black">
+                    <v-card-title>
+                        My favourite Tracks!
+                    </v-card-title>
+                    <v-card-subtitle>
+                        Tracks:
+                    </v-card-subtitle>
+                    <v-card-text>
+                        <v-row
+                            v-for="track in store.spotify.recommends.items"
+                            :key="track.id"
+                        >
+                            <v-col cols="12" align="center">
+                                <v-card
+                                    color="grey-darken-3"
+                                    :style="{
+                                        background: `url(${track.album.images[1].url})`,
+                                        backgroundSize: 'cover',
+                                        padding: '5px',
+                                        backgroundPositionY: 'center'
+                                    }"
+                                >
+                                    <v-btn
+                                        @click="playSong(track.uri)"
+                                        icon="mdi-play-circle"
+                                        color="green-darken-3"
+                                    />
+                                    {{ track.name }}
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </v-sheet>
@@ -174,7 +206,10 @@ export default {
                 tURI: store.spotify.playbackState.item.uri
             })
         }
-        return { toggle, store, next, prev, addToPlaylist }
+        function playSong(uri) {
+            callServer('playSong', { uri })
+        }
+        return { toggle, store, next, prev, addToPlaylist, playSong }
     }
 }
 </script>

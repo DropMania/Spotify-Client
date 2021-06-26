@@ -6,7 +6,6 @@
         elevation="4"
         rounded
     >
-        Search
     </v-sheet>
 </template>
 
