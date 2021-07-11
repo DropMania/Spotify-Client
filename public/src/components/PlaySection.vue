@@ -2,8 +2,12 @@
     <v-sheet
         color="grey-darken-4"
         class="pa-2"
-        height="100%"
+        height="100vh"
         elevation="4"
+        :style="{
+            overflow: 'auto',
+            '&:hover': { display: 'none' }
+        }"
         rounded
     >
         <v-row height="50%">
@@ -160,7 +164,7 @@
                             v-for="track in store.spotify.recommends.items"
                             :key="track.id"
                         >
-                            <v-col cols="12" align="center">
+                            <v-col cols="12" align="left">
                                 <v-card
                                     color="grey-darken-3"
                                     :style="{
@@ -170,12 +174,14 @@
                                         backgroundPositionY: 'center'
                                     }"
                                 >
-                                    <v-btn
-                                        @click="playSong(track.uri)"
-                                        icon="mdi-play-circle"
-                                        color="green-darken-3"
-                                    />
-                                    {{ track.name }}
+                                    <div class="text-white">
+                                        <v-btn
+                                            @click="playSong(track.uri)"
+                                            icon="mdi-play-circle"
+                                            color="green-darken-3"
+                                        />
+                                        {{ track.name }}
+                                    </div>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -192,7 +198,7 @@ import store from '../store'
 export default {
     setup() {
         function toggle() {
-            callServer('toggle')
+            callServer('toggle', {device: window.device_id})
         }
         function next() {
             callServer('next')
@@ -207,7 +213,7 @@ export default {
             })
         }
         function playSong(uri) {
-            callServer('playSong', { uri })
+            callServer('playSong', { uri, device: window.device_id })
         }
         return { toggle, store, next, prev, addToPlaylist, playSong }
     }
